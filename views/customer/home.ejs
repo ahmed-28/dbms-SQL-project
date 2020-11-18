@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+    <div class="ui large menu">
+        <a class="active item" href="/home" >
+          Home
+        </a>
+        <a class="item" href="/sell">
+          Sell 
+        </a>
+        <a class="item" href="/history">
+          History
+        </a>
+        <p class="item right">welcome <%= user %></p>
+        </div>
+    </div>
+    <div class="ui grid">
+      <div class="five wide column">
+        <div class="ui vertical menu" style="margin:0 auto;">
+          <div class="item">
+            <div class="header">Sort By</div>
+            <div class="menu">
+              <a class="item">Price</a>
+            </div>
+          </div>
+          <div div class="ui dropdown item">
+            Brand
+            <i class="dropdown icon" onclick="drop()"></i>
+            <div class="menu">
+              <% for(var i=0;i<brands.length;i++){ %>
+                <a class="item"><i class="edit icon"></i><%=brands[i].BRAND%></a>
+              <%}%>
+            </div>
+          </div >
+          <div class="ui dropdown item">
+            Type
+            <i class="dropdown icon" onclick="drop()"></i>
+            <div class="menu">
+              <% for(var i=0;i<types.length;i++){ %>
+               <a class="item"><i class="edit icon"></i><%= types[i].TYPE %></a>
+              <%}%>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <div class="eleven wide column">
+        <h1 class="ui header">Products</h1>
+        <div class="ui cards">
+            <% for(var i=0;i<products.length;i++){ %>
+                <div class="ui raised card" id="<%=products[i].ID%>" onclick="buy(this.id)">
+                    <div class="content">
+                      <div class="header">
+                        <%= products[i].NAME %>
+                      </div>
+                      <div class="meta">
+                        price: <%= products[i].PRICE %>
+                      </div>
+                      <div class="description">
+                        <%= products[i].DESCRIPTION %>
+                      </div>
+                    </div>
+                    <div class="extra content">
+                      <div class="ui two buttons">
+                        <div class="ui basic green button">BUY</div>
+                      </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer'); %>
+</body>
+<script>
+  function drop(){
+    $('.ui.dropdown')
+  .dropdown();
+  }
+  
+function post(path, params, method='post') {
+
+// The rest of this code assumes you are not using a library.
+// It can be made less wordy if you use one.
+const form = document.createElement('form');
+form.method = method;
+form.action = path;
+
+for (const key in params) {
+  if (params.hasOwnProperty(key)) {
+    const hiddenField = document.createElement('input');
+    hiddenField.type = 'hidden';
+    hiddenField.name = key;
+    hiddenField.value = params[key];
+
+    form.appendChild(hiddenField);
+  }
+}
+
+document.body.appendChild(form);
+form.submit();
+}
+  function buy(id){
+    console.log(id);
+    post('/buy',{id:id});
+  }
+</script>
+</html>

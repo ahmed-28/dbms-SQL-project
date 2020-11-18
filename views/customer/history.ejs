@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+    <div class="ui large menu">
+        <a class="item" href='/home'>
+          Home
+        </a>
+        <a class="item" href="/sell">
+          Sell 
+        </a>
+        <a class="active item" href="/history">
+          History
+        </a>
+        <p class="item right">welcome <%= user %></p>
+        </div>
+    </div>
+    <div class="ui container">
+    <h1 class="ui header">Your buying</h1>
+    <div class="ui cards">
+        <% for(var i=0;i<buyings.length;i++){ %>
+            <div class="ui raised card" id="<%=buyings[i].ID%>" onclick="fillId(this.id)">
+                <div class="content">
+                  <div class="header">
+                    <%= buyings[i].NAME %>
+                  </div>
+                  <div class="meta">
+                    price: <%= buyings[i].PRICE %>
+                  </div>
+                  <div class="description">
+                    <%= buyings[i].DESCRIPTION %>
+                  </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    <h1 class="ui header">your selling</h1>
+    <div class="ui cards">
+        <% for(var i=0;i<products.length;i++){ %>
+            <div class="ui raised card" id="<%=products[i].ID%>" onclick="fillId(this.id)">
+                <div class="content">
+                  <div class="header">
+                    <%= products[i].NAME %>
+                  </div>
+                  <div class="meta">
+                    price: <%= products[i].PRICE %>
+                  </div>
+                  <div class="description">
+                    <%= products[i].DESCRIPTION %>
+                  </div>
+                </div>
+                <div class="extra content">
+                  <div class="ui two buttons">
+                    <div class="ui basic green button" onclick="init()">Update</div>
+                    <div class="ui basic red button" id="<%=products[i].ID%>" onclick="delete_item(this.id)">Delete</div>
+                  </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    </div>
+    <div class="ui small modal">
+        <div class="header">Update details</div>
+        <div class="content">
+            <form class="ui form" id="sell_form" name="sell_form" style="margin-top: 50px;" action="/sell_update" method="POST">
+                <h4 class="ui dividing header">Product Information</h4>
+                <div class="field">
+                  <label>Product Name</label>
+                  <input required type="text" name="product_name" placeholder="Name" style="background-color: rgba(34, 36, 37,0.1) !important;">
+                </div>
+                <div class="field">
+                  <label>Price</label>
+                  <input required type="number" name="price" placeholder="price" style="background-color: rgba(34, 36, 37,0.1) !important; ">
+                </div>
+                <div class="field">
+                    <label">Short Description</label>
+                    <textarea required form="sell_form" name="description" rows="2" style="background-color: rgba(34, 36, 37,0.1)  !important; "></textarea>
+                </div>
+                <h4 class="ui dividing header">Other Details</h4>
+                <div class="two fields">
+                    <div class="field">
+                      <label">Brand</label>
+                      <input required type="text" name="brand" placeholder="samsung, honda, .." style="background-color:rgba(34, 36, 37,0.1) !important;">
+                    </div>
+                    <div class="field">
+                      <labe">Type</label>
+                      <input required type="text" name="type" placeholder="mobile, car, .." style="background-color:rgba(34, 36, 37,0.1) !important;">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                      <input required type="checkbox">
+                      <label>I agree to the Terms and Conditions</label>
+                    </div>
+                </div>
+                <div>
+                    <input type="number" id="prod_id" name="prod_id" value="1" hidden>
+                </div>
+                <button class="ui button" type="submit" style="background-color: rgb(23, 27, 28) !important; color: rgba(232, 229, 227, 0.6) !important;">Submit</button>
+              </form>
+        </div>
+        <div class="actions">
+          <div class="ui approve button">Close</div>
+        </div>
+    </div>
+    <script>
+        var gid;
+        function init(){
+            
+        $('.ui.modal').modal('show');
+        }
+        function fillId(id){
+            console.log(id);
+            gid=id;
+            var ele = document.getElementById("prod_id");
+            ele.value = id;
+        }
+        function post(path, params, method='post') {
+
+// The rest of this code assumes you are not using a library.
+// It can be made less wordy if you use one.
+const form = document.createElement('form');
+form.method = method;
+form.action = path;
+
+for (const key in params) {
+  if (params.hasOwnProperty(key)) {
+    const hiddenField = document.createElement('input');
+    hiddenField.type = 'hidden';
+    hiddenField.name = key;
+    hiddenField.value = params[key];
+
+    form.appendChild(hiddenField);
+  }
+}
+
+document.body.appendChild(form);
+form.submit();
+}
+        function delete_item(id){
+            console.log("hiii");
+            post('/delete_item',{id:id});
+        }
+    </script>
+    <%- include('../partials/footer'); %>
+</body>
+</html>

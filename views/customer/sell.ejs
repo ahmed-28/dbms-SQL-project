@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<script>
+    $('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+</script>
+<body>
+    <div class="ui large menu">
+        <a class="item" href='/home'>
+          Home
+        </a>
+        <a class="active item" href="/sell">
+          Sell 
+        </a>
+        <a class="item" href="/history">
+          History
+        </a>
+        <p class="item right">welcome <%= user %></p>
+        </div>
+    </div>
+
+    <% if(msg!=null){ %>
+    <div class="ui active mini modal transition fade">
+        <div class="ui success message">
+            <i class="close icon"></i>
+            <div class="header">
+                product posted successfully
+            </div>
+            <p>happy earning!</p>
+        </div>
+    </div>
+    <% } %>
+    <h2 class="ui icon header" id="heading">
+        <i class="gift icon"></i>
+        <div class="content">
+            Sell your product
+        </div>
+    </h2>
+    <div class="ui container">
+    <form class="ui form" id="sell_form" name="sell_form" style="margin-top: 50px;" action="/sell" method="POST">
+        <h4 class="ui dividing header">Product Information</h4>
+        <div class="field">
+          <label>Product Name</label>
+          <input required type="text" name="product_name" placeholder="Name" style="background-color: rgba(34, 36, 37,0.1) !important;">
+        </div>
+        <div class="field">
+          <label>Price</label>
+          <input required type="number" name="price" placeholder="price" style="background-color: rgba(34, 36, 37,0.1) !important; ">
+        </div>
+        <div class="field">
+            <label">Short Description</label>
+            <textarea required form="sell_form" name="description" rows="2" style="background-color: rgba(34, 36, 37,0.1)  !important; "></textarea>
+        </div>
+        <h4 class="ui dividing header">Other Details</h4>
+        <div class="two fields">
+            <div class="field">
+              <label">Brand</label>
+              <input required type="text" name="brand" placeholder="samsung, honda, .." style="background-color:rgba(34, 36, 37,0.1) !important;">
+            </div>
+            <div class="field">
+              <labe">Type</label>
+              <input required type="text" name="type" placeholder="mobile, car, .." style="background-color:rgba(34, 36, 37,0.1) !important;">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+              <input required type="checkbox">
+              <label>I agree to the Terms and Conditions</label>
+            </div>
+        </div>
+        <button class="ui button" type="submit" style="background-color: rgb(23, 27, 28) !important; color: rgba(232, 229, 227, 0.6) !important;">Submit</button>
+      </form>
+    </div>
+    <%- include('../partials/footer'); %>
+</body>
+
+<style>
+    #heading{
+        display: inline;
+        text-align: center;
+    }
+</style>
+</html>
