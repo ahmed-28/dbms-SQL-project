@@ -9,8 +9,22 @@ odbc.connect(cn,(err,db)=>{
     router.get('/home',async (req,res) => {
         console.log(req.user);
         const user = req.user;
-
-        const products = await db.query("SELECT * FROM PRODUCT");
+        let products;
+        if(req.query.sort==1){
+            products = await db.query("SELECT * FROM PRODUCT ORDER BY PRICE DESC");
+        }
+        else if(req.query.sort==2){
+            products = await db.query("SELECT * FROM PRODUCT ORDER BY PRICE");
+        }
+        else if(req.query.type){
+            products = await db.query("SELECT * FROM PRODUCT WHERE TYPE=?", [req.query.type]);
+        }
+        else if(req.query.brand){
+            products = await db.query("SELECT * FROM PRODUCT WHERE BRAND=?", [req.query.brand]);
+        }
+        else{
+            products = await db.query("SELECT * FROM PRODUCT");
+        }
         const brands = await db.query("SELECT BRAND FROM PRODUCT");
         const types = await db.query("SELECT TYPE FROM PRODUCT");
         res.render('customer/home',{

@@ -21,9 +21,10 @@
       <div class="five wide column">
         <div class="ui vertical menu" style="margin:0 auto;">
           <div class="item">
-            <div class="header">Sort By</div>
+            <div class="header">Sort By Price</div>
             <div class="menu">
-              <a class="item">Price</a>
+              <a class="item" href="/home?sort=1">High to low</a>
+              <a class="item" href="/home?sort=2">Low to high</a>
             </div>
           </div>
           <div div class="ui dropdown item">
@@ -31,7 +32,7 @@
             <i class="dropdown icon" onclick="drop()"></i>
             <div class="menu">
               <% for(var i=0;i<brands.length;i++){ %>
-                <a class="item"><i class="edit icon"></i><%=brands[i].BRAND%></a>
+                <a class="item" href="/home?brand=<%= brands[i].BRAND%>"><i class="edit icon"></i><%=brands[i].BRAND%></a>
               <%}%>
             </div>
           </div >
@@ -40,7 +41,7 @@
             <i class="dropdown icon" onclick="drop()"></i>
             <div class="menu">
               <% for(var i=0;i<types.length;i++){ %>
-               <a class="item"><i class="edit icon"></i><%= types[i].TYPE %></a>
+               <a class="item" href="/home?type=<%= types[i].TYPE %>"><i class="edit icon"></i><%= types[i].TYPE %></a>
               <%}%>
             </div>
           </div>
