@@ -1,20 +1,25 @@
-var odbc = require("odbc");
+var mysql = require('mysql');
+var util = require('util');
 
-var cn = "DRIVER={MYSQL};SERVER=127.0.0.1;UID=root;PWD=rootpass;DATABASE=dbms_lab";
 
 async function setup(){
-const db = await odbc.connect(cn);
+
+var db = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : 'rootpass',
+    database : 'dbms_lab'
+  });
 if(db) console.log("connected to your DB!!"); 
+const query = util.promisify(db.query).bind(db);
 
 const userTableQuery = `CREATE TABLE USERS(
                                 ID INT PRIMARY KEY AUTO_INCREMENT,
                                 USERNAME VARCHAR(200),
                                 PASSWORD VARCHAR(200)
                                 );`;
-db.query(userTableQuery)
-.then(res => console.log("users table created!!"))
-.catch(err => console.log(err));
-
+await query(userTableQuery);
+console.log("users table done");
 
 const productTableQuery = `CREATE TABLE PRODUCT(
                                 ID INT PRIMARY KEY AUTO_INCREMENT,
@@ -27,9 +32,8 @@ const productTableQuery = `CREATE TABLE PRODUCT(
                                 FOREIGN KEY (SELLER_ID) REFERENCES USERS(ID)
                                 );`;
 
-db.query(productTableQuery)
-    .then(res => console.log("product table created!!"))
-    .catch( (err) => {throw err} );
+await query(productTableQuery);
+console.log("products table done");
 
 const purchaseTableQuery = `CREATE TABLE PURCHASE(
                                 ID INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,10 +45,9 @@ const purchaseTableQuery = `CREATE TABLE PURCHASE(
                                 );`;
                             
 
-db.query(purchaseTableQuery,(err,res)=>{
-    if(err) throw err;
-    else console.log("PURCHASE tbale created !!");
-});
+await query(purchaseTableQuery);
+console.log("purchase table done");
+db.end();
 }
 
 setup();
